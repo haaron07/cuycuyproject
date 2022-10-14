@@ -8,7 +8,7 @@ import pycouchdb
 from dotenv import load_dotenv
 import os
 
-# load_dotenv()  # take environment variables from .env.
+load_dotenv()  # take environment variables from .env.
 
 # # Mysql Settings
 # app.config['MYSQL_USER'] = os.getenv('MYSQL_USER') or 'gsgcorp_kevindev'
@@ -23,16 +23,26 @@ import os
 # db = server.create("test")
 server = pycouchdb.Server("http://eddy:Madara75437029@localhost:5984/")
 
-db = server.database("python-tests")
-doc= {"type":"Person","name":"Jhon Doe"}
-# doc_rev = db.save(doc)
-# db.delete("6386867113334782bc1cd0109a21ec60")
-doc_get = db.query("docidname/viewname","Content-Type – application/json")
+
+# couchdb = server.create("python-tests")
+couchdb = server.database("python-tests")
+
 try:
-    print("Obtener!!")
-    print(doc_get)
+    print("Conectado!!")
+    
 except  e:
     print(e)
+    
+    
+# doc= {"type":"Person","name":"Jhon Doe"}
+# doc_rev = db.save(doc)
+# db.delete("6386867113334782bc1cd0109a21ec60")
+# doc_get = db.query("docidname/viewname","Content-Type – application/json")
+# try:
+#     print("Obtener!!")
+#     print(doc_get)
+# except  e:
+#     print(e)
     
 # if(server):{
 #     print("Conectado")

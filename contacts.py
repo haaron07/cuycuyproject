@@ -1,10 +1,9 @@
-# from flask import Blueprint, request, render_template, redirect, url_for, flash
-# from db import mysql
+from flask import Blueprint, request, render_template, redirect, url_for, flash
+from db import couchdb
 
-# contacts = Blueprint('contacts', __name__, template_folder='app/templates')
+contacts = Blueprint('contacts', __name__, template_folder='app/templates')
 
-
-# @contacts.route('/')
+@contacts.route('/')
 # def Index():
 #     cur = mysql.connection.cursor()
 #     cur.execute('SELECT * FROM contacts')
@@ -13,7 +12,7 @@
 #     return render_template('index.html', contacts=data)
 
 # #---------------------------------------------------------------#
-# @contacts.route('/proyecto1')
+@contacts.route('/proyecto1')
 # def Proyecto1():
 #     cur = mysql.connection.cursor()
 #     cur.execute('SELECT * FROM peliculas')
@@ -21,7 +20,7 @@
 
 #     return render_template('proyecto1.html', contacts=data) 
 
-# @contacts.route('/proyecto2')
+@contacts.route('/proyecto2')
 # def Proyecto2():
 #     cur = mysql.connection.cursor()
 #     cur.execute('SELECT * FROM contacts')
@@ -29,7 +28,7 @@
 #     cur.close()
 #     return render_template('proyecto2.html', contacts=data)
 
-# @contacts.route('/proyecto3')
+@contacts.route('/proyecto3')
 # def Proyecto3():
 #     cur = mysql.connection.cursor()
 #     cur.execute('SELECT * FROM contacts')
@@ -90,7 +89,28 @@
 #             flash(e.args[1])
 #             return redirect(url_for('contacts.Index'))
 
-
+@contacts.route('/add_contact', methods=['POST'])
+def add_contact():
+    if request.method == 'POST':
+        fullname = request.form['fullname']
+        email = request.form['email']
+        phone = request.form['phone']
+        
+        x={
+            "fullname": fullname,
+            "email": email,
+            "phone": phone
+        }
+       
+        try:
+            # cur = mysql.connection.cursor()
+            couchdb.save(x)
+            
+            flash('Contact Added successfully')
+            return redirect(url_for('contacts.Index'))
+        except Exception as e:
+            flash(e.args[1])
+            return redirect(url_for('contacts.Index'))
 # @contacts.route('/edit/<id>', methods=['POST', 'GET'])
 # def get_contact(id):
 #     cur = mysql.connection.cursor()
@@ -142,4 +162,4 @@
 #     flash('Contact Removed Successfully')
 #     return redirect(url_for('contacts.Index'))
 
-# #---------------------------------------------------------------------------------#
+#---------------------------------------------------------------------------------#
